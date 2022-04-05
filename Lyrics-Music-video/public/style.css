@@ -1,0 +1,10 @@
+.video-position {
+    position: sticky;
+    top: 0px;
+}
+
+.music-video {
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
