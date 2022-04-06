@@ -1,6 +1,9 @@
 const songInput = document.querySelector('.song-input');
 const artistInput = document.querySelector('.artist-input');
 const submitBtn = document.querySelector('.btn');
+const musicVideo = document.querySelector('.music-video');
+const lyricsBox = document.querySelector('.lyrics');
+const loader = document.querySelector('.loader');
 
 
 submitBtn.addEventListener('click',(e)=>{
@@ -11,6 +14,10 @@ submitBtn.addEventListener('click',(e)=>{
         const songName = songInput.value;
         const artistName = artistInput.value;
         
+        musicVideo.innerHTML = '';
+        lyricsBox.innerHTML = '';
+
+        loader.classList.remove('d-none');
         getLyrics(songName, artistName);
     }
 });
@@ -20,7 +27,6 @@ async function getLyrics(songName, artistName) {
     const response = await fetch(url);
     const data = await response.json();
 
-    
     if (data.error){
         alert('Oops, lyrics not availale to this song.');
         songInput.value = '';
@@ -28,13 +34,14 @@ async function getLyrics(songName, artistName) {
     } else {
         const formatLyrics = lyrics => lyrics.split("\n").join("<br>");
         const lyrics =  formatLyrics(data.lyrics).replace(/<br><br>/g,"<br>");
+        loader.className += ' d-none';
 
         let output = `
         <h2>Lyrics</h2>
         <p>${lyrics}</p>
         `
         getYtVideo(songName, artistName);
-        document.querySelector('.lyrics').innerHTML = output;
+        lyricsBox.innerHTML = output;
         songInput.value = '';
         artistInput.value = '';
     }
@@ -46,11 +53,12 @@ async function getYtVideo(songName, artistName) {
         const response = await fetch(url);
         const data = await response.json();
         const videoID = data.items[0].id.videoId;
+
         let output = `
         <iframe id="ytplayer" src="https://www.youtube.com/embed/${videoID}?enablejsapi=1" allowfullscreen></iframe>
         `
-        document.querySelector('.music-video').innerHTML = output;
-        document.querySelector('.music-video').className += ' video-position';
+        musicVideo.innerHTML = output;
+        musicVideo.className += ' video-position';
     } catch {
         alert("Something went wrong.");
     }
