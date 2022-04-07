@@ -31,6 +31,7 @@ async function getLyrics(songName, artistName) {
         alert('Oops, lyrics not availale to this song.');
         songInput.value = '';
         artistInput.value = '';
+        loader.className += ' d-none';
     } else {
         const formatLyrics = lyrics => lyrics.split("\n").join("<br>");
         const lyrics =  formatLyrics(data.lyrics).replace(/<br><br>/g,"<br>");
@@ -61,5 +62,6 @@ async function getYtVideo(songName, artistName) {
         musicVideo.className += ' video-position';
     } catch {
         alert("Something went wrong.");
+        loader.className += ' d-none';
     }
 }
